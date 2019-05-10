@@ -17,18 +17,18 @@
                                 </div>
                                     <div class="form-group">
                                         <label>Email address</label>
-                                        <input type="email" class="form-control" placeholder="Email">
+                                        <input type="email" class="form-control" placeholder="Email" v-model="email">
                                 </div>
                                         <div class="form-group">
                                             <label>Password</label>
-                                            <input type="password" class="form-control" placeholder="Password">
+                                            <input type="password" class="form-control" placeholder="Password" v-model="password">
                                 </div>
                                             <div class="checkbox">
                                                 <label>
                                         <input type="checkbox"> Agree the terms and policy
                                     </label>
                                             </div>
-                                        <button type="submit" class="btn btn-primary btn-flat m-b-30 m-t-30">Register</button>
+                                        <button v-on:click="register" type="submit" class="btn btn-primary btn-flat m-b-30 m-t-30">Register</button>
                                             <div class="social-login-content">
                                                 <div class="social-button">
                                         <button type="button" class="btn social google btn-flat btn-addon mb-3"><i class="ti-google"></i>Sign in with google</button>
@@ -48,14 +48,35 @@
 </template>
 
 <script>
+import firebase from 'firebase';
+
+
 export default {
   name: 'Register',
   data () {
     return {
-     
+
+     email: '',
+     password: ''
+    };
+  },
+
+methods:{
+    register: function (e) {
+      firebase.auth().createUserWithEmailAndPassword(this.email, this.password)
+      .then(user => {
+        alert(`Account created for ${user.email}`);
+        this.$router.push('/');
+      },
+      err => {
+        alert(err.message);
+      }
+      );
+
+      e.preventDefault();
     }
   }
-}
+};
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
